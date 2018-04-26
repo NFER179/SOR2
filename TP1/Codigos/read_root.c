@@ -84,11 +84,41 @@ typedef struct {
 
 	// {...} COMPLETAR
 
+	// -> Inicio
+
+    unsigned char filename[8];
+
+    unsigned char fileExtension[3];
+
+    unsigned char fileAtrbutes;
+
+    unsigned char reserved;
+
+    unsigned char createdTime;
+
+    unsigned char createdHour[2];
+
+    unsigned char createdDay[2];
+
+    unsigned char accessedDay[2];
+
+    unsigned char highBytesOfFirstClusterAddress[2];
+
+    unsigned char writenTime[2];
+
+    unsigned char writenDay[2];
+
+    unsigned short lowBytesOfFirstClusterAddress;
+
+    unsigned char sizeOfFile[4];
+
+	// <- Fin
+
 } __attribute((packed)) Fat12Entry;
 
 
 
-/*void print_file_info(Fat12Entry *entry) {
+void print_file_info(Fat12Entry *entry) {
 
     switch(entry->filename[0]) {
 
@@ -98,31 +128,33 @@ typedef struct {
 
     case 0xE5:
 
-        printf("Deleted file: [?%.7s.%.3s]\n", // COMPLETAR
+        printf("Deleted file: [?%.7s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR
 
         return;
 
     case 0x05:
 
-        printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, // COMPLETAR 
+        printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, entry->filename, entry->fileExtension);// COMPLETAR 
 
         break;
 
     case 0x2E:
 
-        printf("Directory: [%.8s.%.3s]\n", // COMPLETAR 
+        printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR 
 
         break;
 
     default:
 
-        printf("File: [%.8s.%.3s]\n", // COMPLETAR 
+printf(" cluster address %d", entry->lowBytesOfFirstClusterAddress);
+
+        printf("File: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR 
 
     }
 
 
 
-}*/
+}
 
 
 
@@ -204,7 +236,7 @@ int main() {
 
     printf("Root dir_entries %d \n", bs.root_dir_entries);
 
-/*    for(i=0; i<bs.root_dir_entries; i++) {
+    for(i=0; i<bs.root_dir_entries; i++) {
 
         fread(&entry, sizeof(entry), 1, in);
 
@@ -212,7 +244,7 @@ int main() {
 
     }
 
-*/
+
 
     printf("\nLeido Root directory, ahora en 0x%X\n", (unsigned int)ftell(in));
 
