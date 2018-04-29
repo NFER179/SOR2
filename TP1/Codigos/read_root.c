@@ -30,8 +30,6 @@ typedef struct {
 
     unsigned short sector_size;
 
-	// {...} COMPLETAR
-
 	// -> Inicio, completando struct
 
     unsigned char SectorsPerCluster;
@@ -82,8 +80,6 @@ typedef struct {
 
 typedef struct {
 
-	// {...} COMPLETAR
-
 	// -> Inicio
 
     unsigned char filename[8];
@@ -120,36 +116,45 @@ typedef struct {
 
 void print_file_info(Fat12Entry *entry) {
 
+  
     switch(entry->filename[0]) {
 
+    case 0x41:
+        return; // unused entry  
+      
     case 0x00:
-
         return; // unused entry
 
     case 0xE5:
-
-        printf("Deleted file: [?%.7s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR
+	printf(" File Attribute [0x%X] ", entry->fileAtrbutes);
+      
+        printf("Deleted file: [%.7s.%.3s]\n", entry->filename, entry->fileExtension);
 
         return;
 
     case 0x05:
 
-        printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, entry->filename, entry->fileExtension);// COMPLETAR 
+        printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, entry->filename, entry->fileExtension);
 
         break;
 
     case 0x2E:
 
-        printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR 
+        printf("SubDirectory: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);
 
         break;
 
     default:
 
-printf(" cluster address %d", entry->lowBytesOfFirstClusterAddress);
+	//printf(" cluster address %d", entry->lowBytesOfFirstClusterAddress);
 
-        printf("File: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);// COMPLETAR 
+	printf(" File Attribute [0x%X] ", entry->fileAtrbutes);
 
+	 if(entry->fileAtrbutes == 0x10){
+	      printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);
+	 }else{
+	      printf("File: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);
+	 }
     }
 
 
@@ -169,10 +174,6 @@ int main() {
     Fat12BootSector bs;
 
     Fat12Entry entry;
-
-
-
-	//{...} Completar
 
 	// -> Inicio
 
