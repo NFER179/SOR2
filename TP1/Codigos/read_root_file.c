@@ -150,7 +150,7 @@ int main() {
 	Fat12Entry entry;
 
 	/* Creamos directorio para dejar los archivos leidos. */
-	mkdir("leidos", 0777);
+//	mkdir("leidos", 0777);
 
 	fseek(in, 0x1BE, SEEK_SET);//Ir al inicioa de la tabla de particiones.
 
@@ -180,7 +180,7 @@ int main() {
 	fseek(in, rootStart, SEEK_SET);
 
 	/* Busqueda de archivos. */
-	out = fopen("leidos/archivosLeidos.txt", "w+");
+	out = fopen("archivosLeidos.txt", "w+");
 
 	for(i=0; i<bs.root_dir_entries; i++) {
 
