@@ -146,13 +146,15 @@ void print_file_info(Fat12Entry *entry) {
 
     default:
 
-	//printf(" cluster address %d", entry->lowBytesOfFirstClusterAddress);
-
-	printf(" File Attribute [0x%X] ", entry->fileAtrbutes);
 
 	 if(entry->fileAtrbutes == 0x10){
+	      printf(" File Attribute [0x%X] ", entry->fileAtrbutes);
 	      printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);
-	 }else{
+	      
+	        
+	 }
+	 else if (entry->fileAtrbutes == 0x20){
+	      printf(" File Attribute [0x%X] ", entry->fileAtrbutes);
 	      printf("File: [%.8s.%.3s]\n", entry->filename, entry->fileExtension);
 	 }
     }
@@ -249,8 +251,38 @@ int main() {
 
     printf("\nLeido Root directory, ahora en 0x%X\n", (unsigned int)ftell(in));
 
+    //leo dataArea.
+    
+        printf("En  0x%X, sector size %d, FAT size %d sectors, %d FATs\n\n",
+
+           (unsigned int)ftell(in), bs.sector_size, bs.fat_size_sectors, bs.number_of_fats);
+
+
+
+    fseek(in, (bs.reserved_sectors-1 + bs.fat_size_sectors * bs.number_of_fats) *
+
+          bs.sector_size, SEEK_CUR);
+
+
+
+    printf("Root dir_entries %d \n", bs.root_dir_entries);
+
+    for(i=0; i<bs.root_dir_entries; i++) {
+
+        fread(&entry, sizeof(entry), 1, in);
+
+        print_file_info(&entry);
+
+    }
+
+
+
+    printf("\nLeido Root directory, ahora en 0x%X\n", (unsigned int)ftell(in));
+    
     fclose(in);
 
     return 0;
 
 }
+
+
