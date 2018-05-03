@@ -181,6 +181,8 @@ int main() {
 
 	/* Busqueda de archivos. */
 	out = fopen("archivosLeidos.txt", "w+");
+	
+	
 
 	for(i=0; i<bs.root_dir_entries; i++) {
 
@@ -195,6 +197,9 @@ int main() {
 
 	}
 
+	printf("\n\nArchivo leido. Guardando en archivo de texto... (/archivoLeidos.txt)\n\n");
+	printf("Guardado exitosamente.\n\n\n");
+	
 	fclose(out);
 	fclose(in);
 	return 0;
